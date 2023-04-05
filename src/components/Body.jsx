@@ -78,7 +78,6 @@ const Body = ({ headerBackground }) => {
     } else {
       dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
     }
-    console.log(currentPlaying);
   };
   const msToMinutesAndSeconds = (ms) => {
     var minutes = Math.floor(ms / 60000);
@@ -215,11 +214,10 @@ const Container = styled.div`
     .header-row {
       display: grid;
       grid-template-columns: 0.3fr 3fr 2fr 0.1fr;
-      margin: 1rem 0 0 0;
+      /* margin: 1rem 0 0 0; */
       color: #b3b3b3;
       position: sticky;
       top: 15vh;
-      margin: 0 0rem;
       padding: 0.5rem 3rem;
       transition: 0.3s ease-in-out;
       border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
