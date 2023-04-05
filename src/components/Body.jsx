@@ -210,6 +210,7 @@ const Container = styled.div`
     }
   }
   .list {
+    padding-bottom: 3rem;
     .header-row {
       display: grid;
       grid-template-columns: 0.3fr 3fr 2fr 0.1fr;
