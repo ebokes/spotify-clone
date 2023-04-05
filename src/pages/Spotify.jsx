@@ -31,6 +31,7 @@ const Spotify = () => {
       });
       const userInfo = {
         userId: data.id,
+        avatar: data.images[0]?.url,
         name: data.display_name,
       };
       dispatch({ type: reducerCases.SET_USER, userInfo });

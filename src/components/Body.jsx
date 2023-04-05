@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
 import { AiFillClockCircle } from "react-icons/ai";
 import { reducerCases } from "../utils/Constants";
-import Playlists from "./Playlist";
 
 const Body = ({ headerBackground }) => {
   const [{ token, selectedPlaylist, selectedPlaylistId }, dispatch] =
@@ -43,6 +42,44 @@ const Body = ({ headerBackground }) => {
     };
     getInitialPlaylist();
   }, [token, dispatch, selectedPlaylistId]);
+  const playTrack = async (
+    id,
+    name,
+    artists,
+    image,
+    context_uri,
+    track_number
+  ) => {
+    const response = await axios.put(
+      `https://api.spotify.com/v1/me/player/play`,
+      {
+        context_uri,
+        offset: {
+          position: track_number - 1,
+        },
+        position_ms: 0,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    if (response.status === 204) {
+      const currentPlaying = {
+        id,
+        name,
+        artists,
+        image,
+      };
+      dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
+      dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+    } else {
+      dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+    }
+    console.log(currentPlaying);
+  };
   const msToMinutesAndSeconds = (ms) => {
     var minutes = Math.floor(ms / 60000);
     var seconds = ((ms % 60000) / 1000).toFixed(0);
@@ -69,10 +106,10 @@ const Body = ({ headerBackground }) => {
                 <span>#</span>
               </div>
               <div className="col">
-                <span>TITLE</span>
+                <span>Title</span>
               </div>
               <div className="col">
-                <span>ALBUM</span>
+                <span>Album</span>
               </div>
               <div className="col">
                 <span>
@@ -82,9 +119,34 @@ const Body = ({ headerBackground }) => {
             </div>
             <div className="tracks">
               {selectedPlaylist.tracks.map(
-                ({ id, name, artists, image, duration, album }, index) => {
+                (
+                  {
+                    id,
+                    name,
+                    artists,
+                    image,
+                    duration,
+                    album,
+                    context_uri,
+                    track_number,
+                  },
+                  index
+                ) => {
                   return (
-                    <div className="row" key={id}>
+                    <div
+                      className="row"
+                      key={id}
+                      onClick={() =>
+                        playTrack(
+                          id,
+                          name,
+                          artists,
+                          image,
+                          context_uri,
+                          track_number
+                        )
+                      }
+                    >
                       <div className="col">
                         <span>{index + 1}</span>
                       </div>
@@ -93,15 +155,18 @@ const Body = ({ headerBackground }) => {
                           <img src={image} alt="track" />
                         </div>
                         <div className="info">
-                          <span className="name">{name}</span>
-                          <span>{artists}</span>
+                          <p className="name">{name}</p>
+
+                          <p className="artists">{artists}</p>
                         </div>
                       </div>
                       <div className="col">
-                        <span>{album}</span>
+                        <p className="album">{album}</p>
                       </div>
                       <div className="col">
-                        <span>{msToMinutesAndSeconds(duration)}</span>
+                        <p className="duration">
+                          {msToMinutesAndSeconds(duration)}
+                        </p>
                       </div>
                     </div>
                   );
@@ -123,9 +188,14 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     gap: 2rem;
+    display: flex;
+
     .image {
+      /* width: 1000px; */
       img {
-        height: 15rem;
+        height: 13rem;
+        width: 13rem;
+        object-fit: cover;
         box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
       }
     }
@@ -133,7 +203,8 @@ const Container = styled.div`
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      color: #e0dede;
+      color: #b3b3b3;
+
       .title {
         color: white;
         font-size: 4rem;
@@ -145,11 +216,13 @@ const Container = styled.div`
       display: grid;
       grid-template-columns: 0.3fr 3fr 2fr 0.1fr;
       margin: 1rem 0 0 0;
-      color: #dddcdc;
+      color: #b3b3b3;
       position: sticky;
       top: 15vh;
-      padding: 1rem 3rem;
+      margin: 0 0rem;
+      padding: 0.5rem 3rem;
       transition: 0.3s ease-in-out;
+      border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
       background-color: ${({ headerBackground }) =>
         headerBackground ? "#000000dc" : "none"};
     }
@@ -165,6 +238,7 @@ const Container = styled.div`
         &:hover {
           background-color: rgba(0, 0, 0, 0.7);
         }
+        cursor: pointer;
         .col {
           display: flex;
           align-items: center;
@@ -184,5 +258,23 @@ const Container = styled.div`
         }
       }
     }
+  }
+  .name {
+    color: #fff;
+  }
+  .artists {
+    display: flex;
+    font-size: 14px;
+    color: #b3b3b3;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .album {
+    color: #b3b3b3;
+  }
+  .duration {
+    color: #b3b3b3;
   }
 `;

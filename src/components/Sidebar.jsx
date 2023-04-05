@@ -46,6 +46,7 @@ const Container = styled.div`
   .top__links {
     display: flex;
     flex-direction: column;
+
     .logo {
       text-align: center;
       margin: 1rem 0;
@@ -62,11 +63,19 @@ const Container = styled.div`
       padding: 1rem;
       li {
         display: flex;
-        gap: 1rem;
+        gap: 0.5rem;
         cursor: pointer;
         transition: 0.3s ease-in-out;
+        align-items: center;
         &:hover {
           color: white;
+        }
+        span {
+          font-weight: 600;
+        }
+
+        svg {
+          font-size: 1.2rem;
         }
       }
     }

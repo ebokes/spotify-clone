@@ -1,10 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  BsFillPlayCircleFill,
-  BsFillPauseCircleFill,
-  BsShuffle,
-} from "react-icons/bs";
+import { BsFillPlayCircleFill, BsShuffle } from "react-icons/bs";
+import { MdOutlinePauseCircleFilled } from "react-icons/md";
 import { CgPlayTrackNext, CgPlayTrackPrev } from "react-icons/cg";
 import { FiRepeat } from "react-icons/fi";
 import { useStateProvider } from "../utils/StateProvider";
@@ -30,6 +27,7 @@ export default function PlayerControls() {
       playerState: !playerState,
     });
   };
+
   const changeTrack = async (type) => {
     await axios.post(
       `https://api.spotify.com/v1/me/player/${type}`,
@@ -73,7 +71,7 @@ export default function PlayerControls() {
       </div>
       <div className="state">
         {playerState ? (
-          <BsFillPauseCircleFill onClick={changeState} />
+          <MdOutlinePauseCircleFilled onClick={changeState} />
         ) : (
           <BsFillPlayCircleFill onClick={changeState} />
         )}

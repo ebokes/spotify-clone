@@ -35,11 +35,39 @@ const Container = styled.div`
   align-content: center;
   align-items: center;
   gap: 1rem;
+
   input {
     width: 9rem;
     border-radius: 2rem;
-    height: 0.2rem;
+    accent-color: #1db954;
+    cursor: pointer;
   }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    margin: 10px 0;
+    width: 50%;
+  }
+  input[type="range"]:focus {
+    /* outline: none; */
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 3px;
+    cursor: pointer;
+    animate: 0.2s;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    border: 1px solid #1db954;
+    height: 20px;
+    width: 20px;
+    border-radius: 18px;
+    background: #1db954;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -9px;
+  }
+
   svg {
     color: #fff;
   }

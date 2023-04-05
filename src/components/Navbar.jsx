@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
 import { FaSearch } from "react-icons/fa";
-import { CgProfile } from "react-icons/cg";
 
 const Navbar = ({ navBackground }) => {
   const [{ userInfo }] = useStateProvider();
@@ -10,11 +9,13 @@ const Navbar = ({ navBackground }) => {
     <Container navBackground={navBackground}>
       <div className="search__bar">
         <FaSearch />
-        <input type="text" placeholder="Artists, songs, or podcasts" />
+        <form>
+          <input type="text" placeholder="Artists or songs" />
+        </form>
       </div>
       <div className="avatar">
         <a href={userInfo?.userUrl}>
-          <CgProfile />
+          <img src={userInfo?.avatar} alt="avatar" />
           <span>{userInfo?.name}</span>
         </a>
       </div>
@@ -60,6 +61,7 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
     a {
       display: flex;
       justify-content: center;
@@ -68,12 +70,12 @@ const Container = styled.div`
       text-decoration: none;
       color: white;
       font-weight: bold;
-      svg {
+
+      img {
+        height: 1.5rem;
         font-size: 1.3rem;
-        background-color: #282828;
         padding: 0.2rem;
-        border-radius: 1rem;
-        color: #c7c5c5;
+        border-radius: 50%;
       }
     }
   }
