@@ -190,7 +190,6 @@ const Container = styled.div`
     display: flex;
 
     .image {
-      /* width: 1000px; */
       img {
         height: 13rem;
         width: 13rem;
