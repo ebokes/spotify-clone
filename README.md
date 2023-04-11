@@ -1,7 +1,7 @@
 # Spotify-clone
 
 ## Introduction
-This application is a simplified version of the Spotify Music Player that fetches data from the Spotify API to display the user's profile and playlists. However, it currently functions only as a remote control for the Spotify player, requiring the original Spotify app to be open and playing before music can be played or controlled using this clone.
+This application is a simplified version of the Spotify Music Player that fetches data from the Spotify API to display the user's profile and playlists. However, due to some certain restriction placed by the Spotify App, this spotify clone currently functions only as a remote control for the Spotify player, requiring the original Spotify app to be open and playing before music can be played or controlled using this clone.
 
 ## Tools used in achieving this application
 - Vite
