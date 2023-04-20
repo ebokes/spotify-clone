@@ -7,9 +7,10 @@ import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
 import { reducerCases } from "../utils/Constants";
+import Toast from "../components/Toast";
 
 const Spotify = () => {
-  const [{ token }, dispatch] = useStateProvider();
+  const [{ token, toastMsg }, dispatch] = useStateProvider();
   const [navBackground, setNavBackground] = useState(false);
   const [headerBackground, setHeaderBackground] = useState(false);
   const bodyRef = useRef();
@@ -40,6 +41,8 @@ const Spotify = () => {
   }, [dispatch, token]);
   return (
     <Container>
+      {toastMsg && <Toast />}
+
       <div className="spotify__body">
         <Sidebar />
         <div className="body" ref={bodyRef} onScroll={bodyScrolled}>

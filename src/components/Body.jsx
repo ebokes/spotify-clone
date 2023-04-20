@@ -11,34 +11,38 @@ const Body = ({ headerBackground }) => {
 
   useEffect(() => {
     const getInitialPlaylist = async () => {
-      const response = await axios.get(
-        `https://api.spotify.com/v1/playlists/${selectedPlaylistId}`,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const selectedPlaylist = {
-        id: response.data.id,
-        name: response.data.name,
-        description: response.data.description.startsWith("<a")
-          ? ""
-          : response.data.description,
-        image: response.data.images[0].url,
-        tracks: response.data.tracks.items.map(({ track }) => ({
-          id: track.id,
-          name: track.name,
-          artists: track.artists.map((artist) => artist.name),
-          image: track.album.images[2].url,
-          duration: track.duration_ms,
-          album: track.album.name,
-          context_uri: track.album.uri,
-          track_number: track.track_number,
-        })),
-      };
-      dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist });
+      try {
+        const response = await axios.get(
+          `https://api.spotify.com/v1/playlists/${selectedPlaylistId}`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const selectedPlaylist = {
+          id: response.data.id,
+          name: response.data.name,
+          description: response.data.description.startsWith("<a")
+            ? ""
+            : response.data.description,
+          image: response.data.images[0].url,
+          tracks: response.data.tracks.items.map(({ track }) => ({
+            id: track.id,
+            name: track.name,
+            artists: track.artists.map((artist) => artist.name),
+            image: track.album.images[2].url,
+            duration: track.duration_ms,
+            album: track.album.name,
+            context_uri: track.album.uri,
+            track_number: track.track_number,
+          })),
+        };
+        dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist });
+      } catch (error) {
+        console.log("error", error);
+      }
     };
     getInitialPlaylist();
   }, [token, dispatch, selectedPlaylistId]);
@@ -50,33 +54,47 @@ const Body = ({ headerBackground }) => {
     context_uri,
     track_number
   ) => {
-    const response = await axios.put(
-      `https://api.spotify.com/v1/me/player/play`,
-      {
-        context_uri,
-        offset: {
-          position: track_number - 1,
+    try {
+      const response = await axios.put(
+        `https://api.spotify.com/v1/me/player/play`,
+        {
+          context_uri,
+          offset: {
+            position: track_number - 1,
+          },
+          position_ms: 0,
         },
-        position_ms: 0,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      if (response.status === 204) {
+        const currentPlaying = {
+          id,
+          name,
+          artists,
+          image,
+        };
+        dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
+        dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+      } else {
+        dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
       }
-    );
-    if (response.status === 204) {
-      const currentPlaying = {
-        id,
-        name,
-        artists,
-        image,
-      };
-      dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
-      dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
-    } else {
-      dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+    } catch (error) {
+      dispatch({
+        type: reducerCases.SET_TOAST,
+        toastMsg: {
+          msg: `Due to Restrictions from Spotify, this clone only acts a remote control to the main Spotify Player. Open the main spotify player in another tab, select any track, then return back here and select any track from your playlist 
+        `,
+          link: "https://open.spotify.com/",
+        },
+      });
+      setTimeout(() => {
+        dispatch({ type: reducerCases.SET_TOAST, toastMsg: null });
+      }, 15000);
     }
   };
   const msToMinutesAndSeconds = (ms) => {

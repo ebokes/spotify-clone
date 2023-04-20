@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { BsFillPlayCircleFill, BsShuffle } from "react-icons/bs";
 import { MdOutlinePauseCircleFilled } from "react-icons/md";
@@ -7,25 +7,36 @@ import { FiRepeat } from "react-icons/fi";
 import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
 import { reducerCases } from "../utils/Constants";
+
 export default function PlayerControls() {
   const [{ token, playerState }, dispatch] = useStateProvider();
 
   const changeState = async () => {
-    const state = playerState ? "pause" : "play";
-    await axios.put(
-      `https://api.spotify.com/v1/me/player/${state}`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-    dispatch({
-      type: reducerCases.SET_PLAYER_STATE,
-      playerState: !playerState,
-    });
+    try {
+      const state = playerState ? "pause" : "play";
+      await axios.put(
+        `https://api.spotify.com/v1/me/player/${state}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      dispatch({
+        type: reducerCases.SET_PLAYER_STATE,
+        playerState: !playerState,
+      });
+    } catch (error) {
+      dispatch({
+        type: reducerCases.SET_TOAST,
+        toastMsg: "Please select a track from the playlist",
+      });
+      setTimeout(() => {
+        dispatch({ type: reducerCases.SET_TOAST, toastMsg: null });
+      }, 6000);
+    }
   };
 
   const changeTrack = async (type) => {
@@ -49,6 +60,7 @@ export default function PlayerControls() {
         },
       }
     );
+
     if (response1.data !== "") {
       const currentPlaying = {
         id: response1.data.item.id,
@@ -94,6 +106,7 @@ const Container = styled.div`
   svg {
     color: #b3b3b3;
     transition: 0.2s ease-in-out;
+    cursor: pointer;
     &:hover {
       color: white;
     }

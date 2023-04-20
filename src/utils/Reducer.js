@@ -8,6 +8,7 @@ export const initialState = {
   playerState: false,
   selectedPlaylist: null,
   selectedPlaylistId: "37i9dQZF1DX5trt9i14X7j",
+  toastMsg: null,
 };
 
 const reducer = (state, action) => {
@@ -46,6 +47,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         selectedPlaylistId: action.selectedPlaylistId,
+      };
+    case reducerCases.SET_TOAST:
+      return {
+        ...state,
+        toastMsg: action.toastMsg,
       };
     default:
       return state;
