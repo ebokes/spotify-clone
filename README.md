@@ -1,7 +1,7 @@
 # Spotify-clone
 
 ## Introduction
-This application is a simplified version of the Spotify Music Player that fetches data from the Spotify API to display the user's profile and playlists. However, it currently functions only as a remote control for the Spotify player, requiring the original Spotify app to be open before music can be played using this clone.
+This application is a simplified version of the Spotify Music Player that fetches data from the Spotify API to display the user's profile and playlists. However, due to some certain restriction placed by the Spotify App, this spotify clone currently functions only as a remote control for the Spotify player, requiring the original Spotify app to be open and playing before music can be played or controlled using this clone.
 
 ## Tools used in achieving this application
 - Vite
@@ -33,4 +33,3 @@ This application is a simplified version of the Spotify Music Player that fetche
 - Implement a feature to allow the user to play music directly on the app instead of just acting as a remote control for the Spotify player.
 - Add functionality to search for music by artist, album, or song title
 - Implement a testing framework like Jest to ensure code reliability and prevent bugs before they occur.
-- Enable real-time updates of a user's listening activity and playback progress.
