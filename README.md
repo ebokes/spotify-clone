@@ -21,7 +21,7 @@ This application is a simplified version of the Spotify Music Player that fetche
 - The webpage is loaded and the user is presented with the welcome page where they click on the "Connect to Spotify" button
 - The user is redirected to the Spotify authorization page where they will be prompted to log in to their Spotify account and grant the app access to the requested scopes
 - Once the user grants access, Spotify will redirect them back to the app with an access token that can be used to make requests to the Spotify API on behalf of the user.
-- The app uses the access token to make API calls and fetch data about the user such as profile information, playlists, and songs in the playlist.
+- The app uses the access token to make API calls and fetch data about the user such as profile information, playlists, and tracks in the playlist.
 - The fetched data is displayed on the app, allowing the user to view their Spotify data on the app.
 
 ## Why I built the project this way
@@ -30,6 +30,5 @@ This application is a simplified version of the Spotify Music Player that fetche
 - I am more focused on building frontend, for this reason I decided to use an existing API rather to create a custom server.
 
 ## If I had more time I would change this
-- Implement a feature to allow the user to play music directly on the app instead of just acting as a remote control for the Spotify player.
 - Add functionality to search for music by artist, album, or song title
 - Implement a testing framework like Jest to ensure code reliability and prevent bugs before they occur.
